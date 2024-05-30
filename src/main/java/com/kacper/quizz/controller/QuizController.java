@@ -27,6 +27,6 @@ public class QuizController
             @RequestParam int numQ,
             @RequestParam String title
     ) {
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return quizService.createQuiz(category, numQ, title);
     }
 }
