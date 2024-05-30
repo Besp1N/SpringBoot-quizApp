@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,15 +21,26 @@ public class QuestionService
     }
 
     public ResponseEntity<List<Question>>getAllQuestions() {
-        return new ResponseEntity<>(questionDAO.findAll(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(questionDAO.findAll(), HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
-    public List<Question> getQuestionByCategory(String category) {
-        return questionDAO.findByCategory(category);
+    public ResponseEntity<List<Question>> getQuestionByCategory(String category) {
+        try {
+            return new ResponseEntity<>(questionDAO.findByCategory(category), HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(questionDAO.findByCategory(category), HttpStatus.BAD_REQUEST);
+
     }
 
-    public String addQuestion(Question question) {
+    public ResponseEntity<String> addQuestion(Question question) {
         questionDAO.save(question);
-        return "success";
+        return new ResponseEntity<>("Question added successfully", HttpStatus.CREATED);
     }
 }
